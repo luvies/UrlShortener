@@ -15,10 +15,6 @@
       "Type": "String",
       "Description": "Name of DynamoDB table to use. If left blank, will be generated.",
       "MinLength": "0"
-    },
-    "CodeArchiveUri": {
-      "Type": "String",
-      "Description": "The URI of the code archive. If left blank, the S3 bucket will be used."
     }
   },
   "Conditions": {
@@ -45,9 +41,7 @@
       "Properties": {
         "Handler": "UrlShortener::UrlShortener.LambdaEntryPoint::FunctionHandlerAsync",
         "Runtime": "dotnetcore2.1",
-        "CodeUri": {
-          "Ref": "CodeArchiveUri"
-        },
+        "CodeUri": "",
         "MemorySize": 256,
         "Timeout": 30,
         "Role": null,
