@@ -70,6 +70,13 @@
           }
         },
         "Events": {
+          "IndexResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/",
+              "Method": "ANY"
+            }
+          },
           "PutResource": {
             "Type": "Api",
             "Properties": {
