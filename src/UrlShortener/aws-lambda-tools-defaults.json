@@ -13,6 +13,6 @@
   "configuration": "Release",
   "framework": "netcoreapp2.1",
   "s3-prefix": "UrlShortener/",
-  "template": "serverless.template",
-  "template-parameters": "ShouldCreateBucket=true;BucketName="
+  "template": "serverless.json",
+  "template-parameters": "ShouldCreateTable=true;TableName="
 }

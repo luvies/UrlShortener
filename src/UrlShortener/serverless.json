@@ -1,0 +1,127 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
+  "Parameters": {
+    "ShouldCreateTable": {
+      "Type": "String",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Description": "If true then the DynamoDB table will be created with the CloudFormation stack."
+    },
+    "TableName": {
+      "Type": "String",
+      "Description": "Name of DynamoDB table to use. If left blank, will be generated.",
+      "MinLength": "0"
+    }
+  },
+  "Conditions": {
+    "CreateTable": {
+      "Fn::Equals": [
+        {
+          "Ref": "ShouldCreateTable"
+        },
+        "true"
+      ]
+    },
+    "TableNameGenerated": {
+      "Fn::Equals": [
+        {
+          "Ref": "TableName"
+        },
+        ""
+      ]
+    }
+  },
+  "Resources": {
+    "AspNetCoreFunction": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "UrlShortener::UrlShortener.LambdaEntryPoint::FunctionHandlerAsync",
+        "Runtime": "dotnetcore2.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaFullAccess"
+        ],
+        "Environment": {
+          "Variables": {
+            "AppTable": {
+              "Fn::If": [
+                "CreateTable",
+                {
+                  "Ref": "Table"
+                },
+                {
+                  "Ref": "TableName"
+                }
+              ]
+            }
+          }
+        },
+        "Events": {
+          "PutResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/{proxy+}",
+              "Method": "ANY"
+            }
+          }
+        }
+      }
+    },
+    "Table": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": {
+          "Fn::If": [
+            "TableNameGenerated",
+            { "Ref": "AWS::NoValue" },
+            { "Ref": "TableName" }
+          ]
+        },
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "forwardId",
+                "AttributeType": "S"
+            }
+        ],
+        "KeySchema": [
+            {
+                "AttributeName": "forwardId",
+                "KeyType": "HASH"
+            }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ApiURL": {
+      "Description": "API endpoint URL for Prod environment",
+      "Value": {
+        "Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+      }
+    },
+    "DynamoDBTableName": {
+      "Value": {
+        "Fn::If": [
+          "CreateTable",
+          {
+            "Ref": "Table"
+          },
+          {
+            "Ref": "TableName"
+          }
+        ]
+      }
+    }
+  }
+}

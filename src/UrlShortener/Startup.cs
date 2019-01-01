@@ -13,22 +13,22 @@ namespace UrlShortener
 {
     public class Startup
     {
-        public const string AppS3BucketKey = "AppS3Bucket";
+        public const string AppTableKey = "AppTable";
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public static IConfiguration Configuration { get; private set; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // Add S3 to the ASP.NET Core dependency injection framework.
-            services.AddAWSService<Amazon.S3.IAmazonS3>();
+            // Add DynamoDB to the ASP.NET Core dependency injection framework.
+            services.AddAWSService<Amazon.DynamoDBv2.IAmazonDynamoDB>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
