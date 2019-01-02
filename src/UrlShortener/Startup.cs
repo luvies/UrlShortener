@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using UrlShortener.Services;
 
 namespace UrlShortener
 {
@@ -29,6 +30,13 @@ namespace UrlShortener
 
             // Add DynamoDB to the ASP.NET Core dependency injection framework.
             services.AddAWSService<Amazon.DynamoDBv2.IAmazonDynamoDB>();
+
+            // Add custom services.
+#if DEBUG
+            services.AddTransient<IForwardDb, ForwardDbDev>();
+#else
+
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
