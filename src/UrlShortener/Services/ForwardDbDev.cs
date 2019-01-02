@@ -27,7 +27,7 @@ namespace UrlShortener.Services
 
         public Task<ForwardItem> GetForward(string id)
         {
-            ForwardItem item = forwardItems.FirstOrDefault(f => f.id == id);
+            ForwardItem item = forwardItems.FirstOrDefault(f => f.Id == id);
 
             // If not found, throw a key error.
             if (item == null)
@@ -49,24 +49,30 @@ namespace UrlShortener.Services
 
         public Task AddForward(ForwardItem forward)
         {
+            forward.Validate();
+
             // Ensure no duplicate ID.
-            if (forwardItems.Any(f => f.id == forward.id))
+            if (forwardItems.Any(f => f.Id == forward.Id))
             {
                 throw new InvalidOperationException("Cannot add a forward with a duplicate ID");
             }
 
             // Add forward to list.
+            forward.Notes = forward.Notes ?? "";
+            forward.Hits = 0;
             forwardItems.Add(forward);
             return Task.CompletedTask;
         }
 
         public async Task UpdateForward(string id, ForwardItemUpdate forward)
         {
+            forward.Validate();
+
             ForwardItem item = await GetForward(id);
 
             // Update forward, preserving existing hit counter.
             item.Dest = forward.Dest;
-            item.Note = forward.Note;
+            item.Notes = forward.Notes;
         }
     }
 }

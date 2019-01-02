@@ -15,6 +15,11 @@
       "Type": "String",
       "Description": "Name of DynamoDB table to use. If left blank, will be generated.",
       "MinLength": "0"
+    },
+    "AuthKey": {
+      "Type": "String",
+      "Description": "The auth key to use for authenticating admins. If empty, login will be prevented entirely.",
+      "Default": ""
     }
   },
   "Conditions": {
@@ -60,6 +65,9 @@
                   "Ref": "TableName"
                 }
               ]
+            },
+            "AuthKey": {
+              "Ref": "AuthKey"
             }
           }
         },

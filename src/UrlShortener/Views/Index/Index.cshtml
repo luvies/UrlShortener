@@ -1,6 +1,26 @@
-﻿@model string;
+﻿@model ValueTuple<IEnumerable<Models.ForwardItem>, string>;
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Admin Panel";
+    // Deconstruct the model.
+    var (Items, ErrorMsg) = Model;
 }
 
-<h1>index</h1>
+@if (!string.IsNullOrEmpty(ErrorMsg))
+{
+    <p>Error: @ErrorMsg</p>
+}
+
+@foreach (var item in Items)
+{
+    <a asp-controller="Index" asp-action="ForwardItem" asp-route-id="@item.Id">@item.Id: @item.Dest</a>
+}
+
+<form asp-controller="Index" asp-action="IndexAdd" method="post">
+    <label for="id">ID</label>
+    <input type="text" name="id" required />
+    <label for="dest">Destination</label>
+    <input type="text" name="dest" required />
+    <label for="notes">Notes</label>
+    <input type="text" name="notes" />
+    <button type="submit">Update</button>
+</form>

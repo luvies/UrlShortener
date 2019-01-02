@@ -1,0 +1,14 @@
+﻿@model bool;
+@{
+    ViewBag.Title = "Login";
+}
+
+@if (Model) {
+    <p>Invalid credentials</p>
+}
+
+<form asp-controller="Index" asp-action="IndexLogin" method="post">
+    <label>Credentials:</label>
+    <input type="password" name="key"/>
+    <button type="submit">Authenticate</button>
+</form>

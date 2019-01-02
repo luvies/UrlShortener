@@ -1,0 +1,26 @@
+﻿@model ValueTuple<Models.ForwardItem, string>;
+@{
+    // Deconstruct the model.
+    var (Item, ErrorMsg) = Model;
+    ViewBag.Title = $"Forward {Item.Id} Info";
+}
+
+@if (!string.IsNullOrEmpty(ErrorMsg))
+{
+    <p>@ErrorMsg</p>
+}
+
+<a asp-controller="Index" asp-action="Index">Home</a>
+
+<h1>@Item.Id</h1>
+<p>Dest: @Item.Dest</p>
+<p>Note: @Item.Notes</p>
+<p>Hits: @Item.Hits</p>
+
+<form asp-controller="Index" asp-action="ForwardItemPatch" method="post">
+    <label for="dest">Destination</label>
+    <input type="text" name="dest" value="@Item.Dest" required />
+    <label for="notes">Notes</label>
+    <input type="text" name="notes" value="@Item.Notes" />
+    <button type="submit">Update</button>
+</form>

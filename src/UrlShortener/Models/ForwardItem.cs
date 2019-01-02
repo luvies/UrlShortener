@@ -4,17 +4,29 @@ namespace UrlShortener.Models
 {
     public class ForwardItem
     {
-        public string id { get; set; }
+        public string Id { get; set; }
         public string Dest { get; set; }
-        public string Note { get; set; }
+        public string Notes { get; set; }
         public int Hits { get; set; }
 
-        public ForwardItem(string id, string dest, string note = "", int? hits = null)
+        public ForwardItem()
+        { }
+
+        public ForwardItem(string id, string dest, string notes = "", int? hits = null)
         {
-            this.id = id;
+            Id = id;
             Dest = dest;
-            Note = note;
+            Notes = notes;
             Hits = hits ?? 0;
+        }
+
+        public void Validate()
+        {
+            if (string.IsNullOrEmpty(Id) ||
+                string.IsNullOrEmpty(Dest))
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }
