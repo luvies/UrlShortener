@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+}
+
+body,
+body * {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+footer {
+    margin: 1.5rem 1rem;
+}
+
+footer p {
+    margin: 0;
+    color: #afafaf;
+    text-align: center;
+    font-size: 10pt;
+}
+
+footer p:not(:last-child) {
+    margin-bottom: 0.4rem;
+}
+
+footer a,
+footer a:visited {
+    color: #6f6f6f;
+}
+
+code {
+    padding: 0.2rem;
+    font-family: monospace;
+    background: #eeeeee;
+    border-radius: 0.3rem;
+}
+
+.content {
+    margin: 1rem 2rem;
+}
+
+.main-heading {
+    font-size: 17pt;
+    font-weight: 600;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.control-group {
+    display: flex;
+    padding: 0.5rem 0;
+}
+
+.control-group label {
+    flex: 0 0 15%;
+    max-width: 15%;
+    height: fit-content;
+    margin: auto 0.5rem auto 0;
+}
+
+.control-group input {
+    flex: 1 1 auto;
+    width: 100%;
+    padding: 0.3rem;
+    border: 1px solid #afafaf;
+    border-radius: 0.2rem;
+}
+
+.btn-submit {
+    background: #34c155;
+    color: #ffffff;
+    font-size: 10pt;
+    padding: 0.5rem 1rem;
+    margin-left: auto;
+    border-radius: 0.3rem;
+    border: none;
+}
+
+.btn-submit:active {
+    background: #2a9643;
+}
+
+.control-group input:focus,
+.btn-submit:focus {
+    outline: #4fa5eb auto 0.2rem;
+}
+
+.error-msg,
+.succ-msg {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    border-radius: 0.3rem;
+}
+
+.error-msg {
+    background: #ffa3a3;
+}
+
+.succ-msg {
+    background: #a7f3a7;
+}
+
+.table {
+    width: 100%;
+}
+
+.table>thead {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.table>thead>tr>th {
+    padding: 0.6rem;
+}
+
+.table>tbody>tr:not(:last-child) {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.table>tbody>tr>td {
+    padding: 0.4rem 0.6rem;
+
+    /* Word wrapping */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+}
+
+.forward-id {
+    display: block;
+}

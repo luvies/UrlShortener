@@ -1,0 +1,14 @@
+﻿@model ValueTuple<string, string>;
+@{
+    var (ErrorMsg, SuccMsg) = Model;
+}
+
+@if (!string.IsNullOrEmpty(ErrorMsg))
+{
+    <p class="error-msg">@ErrorMsg</p>
+}
+
+@if (!string.IsNullOrEmpty(SuccMsg))
+{
+    <p class="succ-msg">@SuccMsg</p>
+}

@@ -1,26 +1,56 @@
-﻿@model ValueTuple<IEnumerable<Models.ForwardItem>, string>;
+﻿@model ValueTuple<IEnumerable<Models.ForwardItem>, string, string>;
+@inject Services.IConfigHelper ConfigHelper;
 @{
     ViewBag.Title = "Admin Panel";
     // Deconstruct the model.
-    var (Items, ErrorMsg) = Model;
+    var (Items, ErrorMsg, SuccMsg) = Model;
 }
 
-@if (!string.IsNullOrEmpty(ErrorMsg))
-{
-    <p>Error: @ErrorMsg</p>
-}
-
-@foreach (var item in Items)
-{
-    <a asp-controller="Index" asp-action="ForwardItem" asp-route-id="@item.Id">@item.Id: @item.Dest</a>
-}
-
-<form asp-controller="Index" asp-action="IndexAdd" method="post">
-    <label for="id">ID</label>
-    <input type="text" name="id" required />
-    <label for="dest">Destination</label>
-    <input type="text" name="dest" required />
-    <label for="notes">Notes</label>
-    <input type="text" name="notes" />
-    <button type="submit">Update</button>
+<h1 class="main-heading">Create New Forward</h1>
+<form asp-controller="Index" asp-action="IndexAdd" method="post" class="form">
+    <div class="control-group">
+        <label for="id">ID:</label>
+        <input type="text" name="id" required />
+    </div>
+    <div class="control-group">
+        <label for="dest">Destination:</label>
+        <input type="text" name="dest" required />
+    </div>
+    <div class="control-group">
+        <label for="notes">Notes:</label>
+        <input type="text" name="notes" />
+    </div>
+    <div class="control-group">
+        <button type="submit" class="btn-submit">Create</button>
+    </div>
 </form>
+
+@await Html.PartialAsync("_Messages", (ErrorMsg, SuccMsg))
+
+<h1 class="main-heading">Current Forwards</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Forward ID</th>
+            <th>Notes</th>
+            <th>Destination</th>
+            <th>Hits</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Items)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Index" asp-action="ForwardItem" asp-route-id="@item.Id" class="forward-id">@item.Id</a>
+                    (<a href="@ConfigHelper.CurrentOrigin/@item.Id">@ConfigHelper.CurrentOrigin/@item.Id</a>)
+                </td>
+                <td>@item.Notes</td>
+                <td>
+                    <a href="@item.Dest">@item.Dest</a>
+                </td>
+                <td>@item.Hits</td>
+            </tr>
+        }
+    </tbody>
+</table>

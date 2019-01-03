@@ -7,6 +7,7 @@ namespace UrlShortener.Services
     {
         const string Key_AppTable = "AppTable";
         const string Key_AuthKey = "AuthKey";
+        const string Key_CurrentOrigin = "CurrentOrigin";
         const string CookieName_AuthKey = "auth-token";
 
         readonly IConfiguration _configuration;
@@ -19,6 +20,8 @@ namespace UrlShortener.Services
         public string AppTable => _configuration[Key_AppTable];
 
         public string AuthKey => _configuration[Key_AuthKey];
+
+        public string CurrentOrigin => _configuration[Key_CurrentOrigin];
 
         public string AuthKeyCookieName => CookieName_AuthKey;
     }

@@ -1,13 +1,25 @@
 ﻿<!DOCTYPE html>
 
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <title>URL Shortener - @ViewBag.Title</title>
-    </head>
-    <body>
-        <div>
-            @RenderBody()
-        </div>
-    </body>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>URL Shortener - @ViewBag.Title</title>
+    <link rel="icon"
+          type="image/png"
+          href="/images/favicon.ico" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body>
+    <div class="content">
+        @RenderBody()
+    </div>
+    <footer>
+        <p>Developed by <a href="https://github.com/luvies">luvies</a></p>
+        <p>Source available under MIT at <a href="https://github.com/luvies/UrlShortener">https://github.com/luvies/UrlShortener</a></p>
+    </footer>
+</body>
+
 </html>

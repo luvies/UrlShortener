@@ -49,7 +49,8 @@ namespace UrlShortener
 #if DEBUG
             services.AddTransient<IForwardDb, ForwardDbDev>();
 #else
-
+            // Use dev service for now to let it work.
+            services.AddTransient<IForwardDb, ForwardDbDev>();
 #endif
         }
 
@@ -80,6 +81,7 @@ namespace UrlShortener
                 return Task.CompletedTask;
             });
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

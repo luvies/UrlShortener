@@ -20,6 +20,11 @@
       "Type": "String",
       "Description": "The auth key to use for authenticating admins. If empty, login will be prevented entirely.",
       "Default": ""
+    },
+    "CurrentOrigin": {
+      "Type": "String",
+      "Description": "The origin the URL shortener is running from. This is only used for displaying the URLs in the admin page.",
+      "Default": ""
     }
   },
   "Conditions": {
@@ -68,6 +73,9 @@
             },
             "AuthKey": {
               "Ref": "AuthKey"
+            },
+            "CurrentOrigin": {
+              "Ref": "CurrentOrigin"
             }
           }
         },

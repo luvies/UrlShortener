@@ -24,13 +24,13 @@ namespace UrlShortener.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string errorMessage = null)
+        public async Task<IActionResult> Index(string errorMessage = null, string successMessage = null)
         {
             if (User.Identity.IsAuthenticated)
             {
                 return View(
                     "Index",
-                    (await _forwardDb.ListAllForwards(), errorMessage)
+                    (await _forwardDb.ListAllForwards(), errorMessage, successMessage)
                 );
             }
             return View("Login", false);
@@ -54,7 +54,7 @@ namespace UrlShortener.Controllers
             try
             {
                 await _forwardDb.AddForward(forward);
-                return await Index();
+                return await Index(successMessage: "Forward added");
             }
             catch (ArgumentException)
             {
@@ -81,13 +81,13 @@ namespace UrlShortener.Controllers
         }
 
         [HttpGet("{id}/edit")]
-        public async Task<IActionResult> ForwardItem(string id, string errorMessage = null)
+        public async Task<IActionResult> ForwardItem(string id, string errorMessage = null, string successMessage = null)
         {
             try
             {
                 return View(
                     "ForwardItem",
-                    (await _forwardDb.GetForward(id), errorMessage)
+                    (await _forwardDb.GetForward(id), errorMessage, successMessage)
                 );
             }
             catch (KeyNotFoundException)
@@ -102,7 +102,7 @@ namespace UrlShortener.Controllers
             try
             {
                 await _forwardDb.UpdateForward(id, forward);
-                return await ForwardItem(id);
+                return await ForwardItem(id, successMessage: "Forward updated");
             }
             catch (ArgumentException)
             {
