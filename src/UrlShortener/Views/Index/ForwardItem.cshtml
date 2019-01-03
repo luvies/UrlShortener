@@ -9,7 +9,7 @@
 <form asp-controller="Index" asp-action="ForwardItemPatch" method="post" class="form">
     <div class="control-group">
         <label for="dest">Destination</label>
-        <input type="text" name="dest" value="@Item.Dest" required />
+        <input type="url" name="dest" value="@Item.Dest" required />
     </div>
     <div class="control-group">
         <label for="notes">Notes</label>

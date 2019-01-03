@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Amazon.DynamoDBv2.DocumentModel;
 
 namespace UrlShortener.Models
@@ -11,6 +12,20 @@ namespace UrlShortener.Models
             public const string Dest = "dest";
             public const string Notes = "notes";
             public const string Hits = "hits";
+        }
+
+        internal static void ValidateDest(string dest)
+        {
+            if (string.IsNullOrEmpty(dest))
+            {
+                throw new ValidationException("Destination cannot be empty");
+            }
+
+            if (!(Uri.TryCreate(dest, UriKind.Absolute, out Uri uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)))
+            {
+                throw new ValidationException("Destination has to be an URL");
+            }
         }
 
         public static ForwardItem FromDocument(Document doc)
@@ -41,11 +56,17 @@ namespace UrlShortener.Models
 
         public void Validate()
         {
-            if (string.IsNullOrEmpty(Id) ||
-                string.IsNullOrEmpty(Dest))
+            if (string.IsNullOrEmpty(Id))
             {
-                throw new ArgumentException();
+                throw new ValidationException("Forward ID cannot be empty");
             }
+
+            if (!Regex.IsMatch(Id, @"^[A-Za-z0-9-._~!$&'()*+,;=:@%]+$"))
+            {
+                throw new ValidationException("Forward ID can only contain characters valid in an URL path");
+            }
+
+            ValidateDest(Dest);
         }
 
         public Document ToDocument()

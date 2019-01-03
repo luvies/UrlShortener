@@ -56,9 +56,9 @@ namespace UrlShortener.Controllers
                 await _forwardDb.AddForward(forward);
                 return await Index(successMessage: "Forward added");
             }
-            catch (ArgumentException)
+            catch (ValidationException ex)
             {
-                return await Index("Forward data invalid");
+                return await Index(ex.Message);
             }
             catch (InvalidOperationException ex)
             {
@@ -104,9 +104,9 @@ namespace UrlShortener.Controllers
                 await _forwardDb.UpdateForward(id, forward);
                 return await ForwardItem(id, successMessage: "Forward updated");
             }
-            catch (ArgumentException)
+            catch (ValidationException ex)
             {
-                return await ForwardItem(id, "Forward data invalid");
+                return await ForwardItem(id, ex.Message);
             }
             catch (KeyNotFoundException)
             {

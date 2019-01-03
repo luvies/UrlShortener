@@ -10,20 +10,23 @@ namespace UrlShortener.Models
 
         public void Validate()
         {
-            if (string.IsNullOrEmpty(Dest))
-            {
-                throw new ArgumentException();
-            }
+            ForwardItem.ValidateDest(Dest);
         }
 
         public Document ToDocument(string id)
         {
-            return new Document
+            var doc = new Document
             {
                 [ForwardItem.DbKeys.Id] = id,
-                [ForwardItem.DbKeys.Dest] = Dest,
-                [ForwardItem.DbKeys.Notes] = Notes
+                [ForwardItem.DbKeys.Dest] = Dest
             };
+
+            if (!string.IsNullOrEmpty(Notes))
+            {
+                doc[ForwardItem.DbKeys.Notes] = Notes;
+            }
+
+            return doc;
         }
     }
 }
