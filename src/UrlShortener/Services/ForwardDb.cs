@@ -92,33 +92,40 @@ namespace UrlShortener.Services
 
         public async Task<string> ProcessForward(string id)
         {
-            // Unfortunately, the document model API doesn't seem to
-            // support the update expression (which is needed to update
-            // the document without fetching it first), so we have to fall
-            // back to the low-level API.
-            var doc = await _dynamoDb.UpdateItemAsync(new UpdateItemRequest
+            try
             {
-                TableName = _configHelper.AppTable,
-                Key = new Dictionary<string, AttributeValue>
+                // Unfortunately, the document model API doesn't seem to
+                // support the update expression (which is needed to update
+                // the document without fetching it first), so we have to fall
+                // back to the low-level API.
+                var doc = await _dynamoDb.UpdateItemAsync(new UpdateItemRequest
                 {
-                    [FwdKeys.Id] = new AttributeValue { S = id }
-                },
-                UpdateExpression = "ADD #hitCounter :inc",
-                ConditionExpression = "#id = :id",
-                ExpressionAttributeNames = new Dictionary<string, string>
-                {
-                    ["#id"] = FwdKeys.Id,
-                    ["#hitCounter"] = FwdKeys.Hits
-                },
-                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
-                {
-                    [":id"] = new AttributeValue { S = id },
-                    [":inc"] = new AttributeValue { N = "1" }
-                },
-                ReturnValues = "ALL_NEW"
-            });
+                    TableName = _configHelper.AppTable,
+                    Key = new Dictionary<string, AttributeValue>
+                    {
+                        [FwdKeys.Id] = new AttributeValue { S = id }
+                    },
+                    UpdateExpression = "ADD #hitCounter :inc",
+                    ConditionExpression = "#id = :id",
+                    ExpressionAttributeNames = new Dictionary<string, string>
+                    {
+                        ["#id"] = FwdKeys.Id,
+                        ["#hitCounter"] = FwdKeys.Hits
+                    },
+                    ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                    {
+                        [":id"] = new AttributeValue { S = id },
+                        [":inc"] = new AttributeValue { N = "1" }
+                    },
+                    ReturnValues = "ALL_NEW"
+                });
 
-            return doc.Attributes[FwdKeys.Dest].S;
+                return doc.Attributes[FwdKeys.Dest].S;
+            }
+            catch (ConditionalCheckFailedException)
+            {
+                throw new KeyNotFoundException("A forward with that ID was not found");
+            }
         }
 
         public async Task UpdateForward(string id, ForwardItemUpdate forward)
