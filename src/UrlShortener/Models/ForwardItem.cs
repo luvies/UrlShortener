@@ -71,19 +71,13 @@ namespace UrlShortener.Models
 
         public Document ToDocument()
         {
-            var doc = new Document
+            return new Document
             {
                 [DbKeys.Id] = Id,
                 [DbKeys.Dest] = Dest,
+                [DbKeys.Notes] = Notes ?? "",
                 [DbKeys.Hits] = Hits
             };
-
-            if (!string.IsNullOrEmpty(Notes))
-            {
-                doc[DbKeys.Notes] = Notes;
-            }
-
-            return doc;
         }
     }
 }

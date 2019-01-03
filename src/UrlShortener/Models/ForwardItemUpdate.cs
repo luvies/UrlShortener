@@ -15,18 +15,12 @@ namespace UrlShortener.Models
 
         public Document ToDocument(string id)
         {
-            var doc = new Document
+            return new Document
             {
                 [ForwardItem.DbKeys.Id] = id,
-                [ForwardItem.DbKeys.Dest] = Dest
+                [ForwardItem.DbKeys.Dest] = Dest,
+                [ForwardItem.DbKeys.Notes] = Notes ?? ""
             };
-
-            if (!string.IsNullOrEmpty(Notes))
-            {
-                doc[ForwardItem.DbKeys.Notes] = Notes;
-            }
-
-            return doc;
         }
     }
 }
