@@ -1,4 +1,5 @@
 ﻿using System;
+using Amazon.DynamoDBv2.DocumentModel;
 
 namespace UrlShortener.Models
 {
@@ -13,6 +14,16 @@ namespace UrlShortener.Models
             {
                 throw new ArgumentException();
             }
+        }
+
+        public Document ToDocument(string id)
+        {
+            return new Document
+            {
+                [ForwardItem.DbKeys.Id] = id,
+                [ForwardItem.DbKeys.Dest] = Dest,
+                [ForwardItem.DbKeys.Notes] = Notes
+            };
         }
     }
 }

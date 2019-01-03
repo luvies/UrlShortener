@@ -1,9 +1,28 @@
 ﻿using System;
+using Amazon.DynamoDBv2.DocumentModel;
 
 namespace UrlShortener.Models
 {
     public class ForwardItem
     {
+        public static class DbKeys
+        {
+            public const string Id = "forwardId";
+            public const string Dest = "dest";
+            public const string Notes = "notes";
+            public const string Hits = "hits";
+        }
+
+        public static ForwardItem FromDocument(Document doc)
+        {
+            return new ForwardItem(
+                doc[DbKeys.Id].AsString(),
+                doc[DbKeys.Dest].AsString(),
+                doc.ContainsKey(DbKeys.Notes) ? doc[DbKeys.Notes].AsString() : "",
+                doc[DbKeys.Hits].AsInt()
+            );
+        }
+
         public string Id { get; set; }
         public string Dest { get; set; }
         public string Notes { get; set; }
@@ -27,6 +46,23 @@ namespace UrlShortener.Models
             {
                 throw new ArgumentException();
             }
+        }
+
+        public Document ToDocument()
+        {
+            var doc = new Document
+            {
+                [DbKeys.Id] = Id,
+                [DbKeys.Dest] = Dest,
+                [DbKeys.Hits] = Hits
+            };
+
+            if (!string.IsNullOrEmpty(Notes))
+            {
+                doc[DbKeys.Notes] = Notes;
+            }
+
+            return doc;
         }
     }
 }

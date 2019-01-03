@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -41,7 +42,7 @@ namespace UrlShortener
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Add DynamoDB to the ASP.NET Core dependency injection framework.
-            services.AddAWSService<Amazon.DynamoDBv2.IAmazonDynamoDB>();
+            services.AddAWSService<IAmazonDynamoDB>();
 
             // Add custom services.
             services.AddTransient<IConfigHelper, ConfigHelper>();
@@ -49,8 +50,7 @@ namespace UrlShortener
 #if DEBUG
             services.AddTransient<IForwardDb, ForwardDbDev>();
 #else
-            // Use dev service for now to let it work.
-            services.AddTransient<IForwardDb, ForwardDbDev>();
+            services.AddTransient<IForwardDb, ForwardDb>();
 #endif
         }
 
