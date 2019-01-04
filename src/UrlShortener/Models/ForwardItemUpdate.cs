@@ -19,7 +19,8 @@ namespace UrlShortener.Models
             {
                 [ForwardItem.DbKeys.Id] = id,
                 [ForwardItem.DbKeys.Dest] = Dest,
-                [ForwardItem.DbKeys.Notes] = Notes ?? ""
+                [ForwardItem.DbKeys.Notes] = Notes ?? "",
+                [ForwardItem.DbKeys.UpdatedAt] = DateTime.UtcNow.ToString("o")
             };
         }
     }

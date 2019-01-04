@@ -50,6 +50,7 @@ namespace UrlShortener.Services
         public Task AddForward(ForwardItem forward)
         {
             forward.Validate();
+            forward.Hits = 0;
 
             // Ensure no duplicate ID.
             if (forwardItems.Any(f => f.Id == forward.Id))
@@ -73,6 +74,7 @@ namespace UrlShortener.Services
             // Update forward, preserving existing hit counter.
             item.Dest = forward.Dest;
             item.Notes = forward.Notes;
+            item.UpdatedAt = DateTime.UtcNow;
         }
     }
 }

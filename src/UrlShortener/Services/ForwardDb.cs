@@ -13,7 +13,15 @@ namespace UrlShortener.Services
 {
     public class ForwardDb : IForwardDb
     {
-        static readonly List<string> AllAttrs = new List<string> { FwdKeys.Id, FwdKeys.Dest, FwdKeys.Notes, FwdKeys.Hits };
+        static readonly List<string> AllAttrs = new List<string>
+        {
+            FwdKeys.Id,
+            FwdKeys.Dest,
+            FwdKeys.Notes,
+            FwdKeys.Hits,
+            FwdKeys.CreatedAt,
+            FwdKeys.UpdatedAt
+        };
 
         readonly IAmazonDynamoDB _dynamoDb;
         readonly IConfigHelper _configHelper;

@@ -12,6 +12,8 @@ namespace UrlShortener.Models
             public const string Dest = "dest";
             public const string Notes = "notes";
             public const string Hits = "hits";
+            public const string CreatedAt = "createdAt";
+            public const string UpdatedAt = "updatedAt";
         }
 
         internal static void ValidateDest(string dest)
@@ -34,7 +36,9 @@ namespace UrlShortener.Models
                 doc[DbKeys.Id].AsString(),
                 doc[DbKeys.Dest].AsString(),
                 doc.ContainsKey(DbKeys.Notes) ? doc[DbKeys.Notes].AsString() : "",
-                doc[DbKeys.Hits].AsInt()
+                doc[DbKeys.Hits].AsInt(),
+                DateTime.Parse(doc[DbKeys.CreatedAt].AsString()),
+                DateTime.Parse(doc[DbKeys.UpdatedAt].AsString())
             );
         }
 
@@ -42,16 +46,26 @@ namespace UrlShortener.Models
         public string Dest { get; set; }
         public string Notes { get; set; }
         public int Hits { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public ForwardItem()
-        { }
+        {
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+        }
 
-        public ForwardItem(string id, string dest, string notes = "", int? hits = null)
+        public ForwardItem(
+            string id, string dest, string notes = "",
+            int? hits = null, DateTime? createdAt = null,
+            DateTime? updatedAt = null) : this()
         {
             Id = id;
             Dest = dest;
             Notes = notes;
             Hits = hits ?? 0;
+            CreatedAt = createdAt ?? CreatedAt;
+            UpdatedAt = updatedAt ?? UpdatedAt;
         }
 
         public void Validate()
@@ -76,7 +90,9 @@ namespace UrlShortener.Models
                 [DbKeys.Id] = Id,
                 [DbKeys.Dest] = Dest,
                 [DbKeys.Notes] = Notes ?? "",
-                [DbKeys.Hits] = Hits
+                [DbKeys.Hits] = Hits,
+                [DbKeys.CreatedAt] = CreatedAt.ToString("o"),
+                [DbKeys.UpdatedAt] = UpdatedAt.ToString("o")
             };
         }
     }
