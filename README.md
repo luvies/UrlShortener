@@ -11,7 +11,7 @@ Yes. Thanks to what AWS provides, serverless means that:
   - You can essentially set up a single config file, run a command, and have the whole app working
 - It will cost about $0.01 a month to run with a medium-low trafficked site
   - Only S3 will cost something, since it has a minimum of 1 cent when hosting things
-    - This only applies if you leave the deployment artefacts in S3 (from some testing, it seems that they can be deleted after app deployment is done)
+    - This only applies if you leave the deployment artefacts in S3 (these can be removed after deployment)
   - Both Lambda and DynamoDB (the only main dependencies of the app) have permanent free tiers
 
 # Setup
